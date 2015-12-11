@@ -291,13 +291,13 @@ public class RDFStorage extends Storage {
 			//Properties params = TomcatHelper.getProperties("jVirt.conf");
 			Properties params = TomcatHelper.getProperties(getConfFileName());
 			
-			PROTOCOL = params.getProperty("rdf_protocol");
-			HOST = params.getProperty("rdf_host");
-			PORT = params.getProperty("rdf_port");
-			SPARQL_ENDPOINT = params.getProperty("query_endpoint");
-			UPDATE_ENDPOINT = params.getProperty("update_endpoint");
-			USER = params.getProperty("rdf_username");
-			PWD = params.getProperty("rdf_password");
+			PROTOCOL = params.getProperty("rdf_protocol").trim();
+			HOST = params.getProperty("rdf_host").trim();
+			PORT = params.getProperty("rdf_port").trim();
+			SPARQL_ENDPOINT = params.getProperty("query_endpoint").trim();
+			UPDATE_ENDPOINT = params.getProperty("update_endpoint").trim();
+			USER = params.getProperty("rdf_username").trim();
+			PWD = params.getProperty("rdf_password").trim();
 			qHeaderTypes = (params.getProperty("query_headerTypes[]"))
 					.split(";");
 			qHeaderValues = (params.getProperty("query_headerValues[]"))
@@ -349,13 +349,13 @@ public class RDFStorage extends Storage {
 						+ File.separator + "resources" + File.separator
 						+ getConfFileName()));
 
-				PROTOCOL = params.getProperty("rdf_protocol");
-				HOST = params.getProperty("rdf_host");
-				PORT = params.getProperty("rdf_port");
-				SPARQL_ENDPOINT = params.getProperty("query_endpoint");
-				UPDATE_ENDPOINT = params.getProperty("update_endpoint");
-				USER = params.getProperty("rdf_username");
-				PWD = params.getProperty("rdf_password");
+				PROTOCOL = params.getProperty("rdf_protocol").trim();
+				HOST = params.getProperty("rdf_host").trim();
+				PORT = params.getProperty("rdf_port").trim();
+				SPARQL_ENDPOINT = params.getProperty("query_endpoint").trim();
+				UPDATE_ENDPOINT = params.getProperty("update_endpoint").trim();
+				USER = params.getProperty("rdf_username").trim();
+				PWD = params.getProperty("rdf_password").trim();
 				qHeaderTypes = (params.getProperty("query_headerTypes[]"))
 						.split(";");
 				qHeaderValues = (params.getProperty("query_headerValues[]"))

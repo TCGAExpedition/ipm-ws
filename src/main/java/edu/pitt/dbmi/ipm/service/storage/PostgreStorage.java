@@ -106,10 +106,10 @@ public class PostgreStorage extends Storage {
 			hasParams = true;
 			Properties params = TomcatHelper
 					.getProperties("jQueryPostgres.conf");
-			DRIVER = params.getProperty("driver");
-			URL = params.getProperty("url");
-			USER = params.getProperty("user");
-			PASS = params.getProperty("pass");
+			DRIVER = params.getProperty("driver").trim();
+			URL = params.getProperty("url").trim();
+			USER = params.getProperty("user".trim());
+			PASS = params.getProperty("pass").trim();
 
 			labelMethodMap = jsonToMap(params.getProperty("label_method_list"),
 					true);
@@ -227,10 +227,10 @@ public class PostgreStorage extends Storage {
 						+ File.separator + "resources" + File.separator
 						+ "jQueryPostgres.conf"));
 
-				DRIVER = params.getProperty("driver");
-				URL = params.getProperty("url");
-				USER = params.getProperty("user");
-				PASS = params.getProperty("pass");
+				DRIVER = params.getProperty("driver").trim();
+				URL = params.getProperty("url").trim();
+				USER = params.getProperty("user").trim();
+				PASS = params.getProperty("pass").trim();
 
 				labelMethodMap = jsonToMap(
 						params.getProperty("label_method_list"), true);

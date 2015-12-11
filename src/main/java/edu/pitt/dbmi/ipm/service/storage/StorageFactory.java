@@ -32,7 +32,7 @@ public class StorageFactory {
 	
 	public static Storage getStorage(){
 		if(storage == null){
-			storage = getStorage( TomcatHelper.getProperties("jQueryPostgres.conf").getProperty("useVitOrPostgre").toLowerCase());
+			storage = getStorage( TomcatHelper.getProperties("jQueryPostgres.conf").getProperty("useVitOrPostgre").toLowerCase().trim());
 		}
 		return storage;
 	}

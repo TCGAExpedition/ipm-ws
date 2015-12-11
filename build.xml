@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir="." default="help" name="ipm"  xmlns:artifact="urn:maven-artifact-ant">
+
+	
+    <property environment="env"/>
+    
+    <property name="tomcat.home" value="${env.CATALINA_HOME}"/>
+    <property name="build.home" value="${basedir}/build"/>
+	<property name="resources.dir" value="${basedir}/resources"/>
+    <property name="build.war.home" value="${basedir}/war"/>
+    <property name="build.classes.home" value="${build.home}/classes"/>
+    <property name="build.utils.src.dir" value="${basedir}/src/build/java"/>    
+    <property name="build.utils.classes.home" value="${build.home}/buildutil/classes"/>
+    <property name="war.directory.name" value="${ant.project.name}-ws"/>
+    <property name="tomcat.deploy.dir" value="${tomcat.home}/webapps"/>
+    <property name="tomcat.conf.dir" value="${tomcat.home}/conf"/>	
+    <property name="tomcat.war.dir" value="${tomcat.deploy.dir}/${war.directory.name}"/>
+    <property name="tomcat.war.work.dir" value="${tomcat.home}/work/Catalina/localhost/${war.directory.name}"/>
+    <property name="war.file.name" value="${war.directory.name}.war"/>
+    <property name="war.build.file" value="${build.war.home}/${war.file.name}"/>
+    <property name="src.dir" value="${basedir}/src/main/java"/>
+    <property name="web.content.dir" value="${basedir}/src/main/webapp"/>
+    <property name="lib.dir" value="${basedir}/lib"/>
+    
+    <path id="web.classpath">
+       <fileset dir="${lib.dir}">
+	  <include name="*.jar"/>
+       </fileset>
+    </path>
+    
+    <target name="setup">
+        <mkdir dir="${build.war.home}"/>
+        <mkdir dir="${build.classes.home}"/>
+        <mkdir dir="${build.war.home}"/>
+    </target>
+
+    <target name="build-server-java" depends="setup">
+	<javac
+	       fork="true"
+	       srcdir="${src.dir}"
+	       destdir="${build.classes.home}"
+	       debug="true"
+	       includes="edu/**/*">
+		<classpath>
+			<path refid="web.classpath"/>
+		</classpath>
+	</javac>
+        <!-- copy handlers descriptor file -->
+        <copy todir="${build.classes.home}">
+            <fileset dir="${src.dir}">
+                <include name="**/*.xml"/>
+                <include name="**/*.fo"/>
+                <include name="**/*.fo-xsl"/>
+                <include name="**/*.xsl"/>
+                <include name="**/*.properties"/>
+            </fileset>
+        </copy>
+    	<copy file="${resources.dir}/log4j.properties" todir="${build.classes.home}" overwrite="yes"/>
+    	<copy file="${resources.dir}/jQueryVirt.conf" todir="${tomcat.conf.dir}" overwrite="yes"/>
+    	<copy file="${resources.dir}/jVirt.conf" todir="${tomcat.conf.dir}" overwrite="yes"/>
+    	<copy file="${resources.dir}/jQueryPostgres.conf" todir="${tomcat.conf.dir}" overwrite="yes"/>
+    </target>
+    <target name="deploy" depends="check-env">
+       <copy file="${war.build.file}" todir="${tomcat.deploy.dir}" overwrite="yes"/>
+		 <tstamp>
+			 <format property="NOW" pattern="yyyy MMMM dd HH:mm:ss" locale="en"/>
+		 </tstamp>
+		 <echo message="Deploy finished: ${NOW}"/>		 
+    </target>
+    <target name="clean">
+        <antcall target="clean-server"/>
+    </target>
+    <target name="clean-cache">
+        <delete>
+		<fileset dir="${ui.dir}/cache/objects">
+			<include name="config*"/>
+		</fileset>
+		<fileset dir="${ui.dir}/cache/template/smarty">
+			<include name="%%*"/>
+		</fileset>		
+	</delete>
+    </target>
+    <target name="clean-server">
+        <delete dir="${build.war.home}" includeEmptyDirs="true"/>
+        <delete dir="${build.classes.home}" includeEmptyDirs="true"/>
+    </target>
+    <target name="clean-tomcat">
+    	<delete file="${tomcat.deploy.dir}/${war.file.name}"/>
+       <delete dir="${tomcat.war.dir}" includeEmptyDirs="true"/>
+       <delete dir="${tomcat.war.work.dir}" includeEmptyDirs="true"/>
+    </target>
+    <target name="create-war">
+        <war warfile="${war.build.file}" webxml="${web.content.dir}/WEB-INF/web.xml">
+            <webinf dir="${web.content.dir}/WEB-INF">
+		       <include name="**/*"/>
+		       <exclude name="web.xml"/>
+	    	</webinf>
+            <zipfileset
+                    dir="${web.content.dir}//WEB-INF"
+                    includes="*.wsdl, *.xsd"
+                    prefix="WEB-INF/wsdl"/>
+            <classes dir="${build.classes.home}"/>
+	    <lib dir="${lib.dir}">
+	       <include name="**/*.jar"/>
+	    </lib>
+        </war>
+    </target>
+    <target name="clean-deploy" depends="clean-server, clean-tomcat, server, deploy"/>
+    
+    <target name="help">
+        <echo message="server:               Builds the service endpoint WAR"/>
+        <echo message="clean:                Deletes build files"/>
+	<echo message="deploy:               Deploys war file to Tomcat"/>
+	<echo message="clean-tomcat:         Removes war file and all temp files from"/>
+	<echo message="                      Tomcat"/>	
+	<echo message="clean-deploy:         Cleans project and tomcat directories,"/>
+	<echo message="                      then rebuilds and deploys the service"/>
+	<echo message="                      endpoint WAR"/>
+    </target>
+
+    <target name="server" depends="setup">
+        <antcall target="clean-server"/>
+        <antcall target="build-server-java"/>
+        <antcall target="create-war"/>
+    </target>
+
+    	<target name="check-env">
+		<fail unless="env.CATALINA_HOME" message="Please ensure that the environment variable CATALINA_HOME points to your Tomcat directory."/>
+	</target>
+</project>

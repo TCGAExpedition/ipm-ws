@@ -8,8 +8,8 @@ RDF graph or relational metadata store.
 Tomcat 7.x running on Java 7 or greater.
 
 #Installation
-1. Install <b>ipm</>
-2. Install war/ipm-ws.war on your Tomcat web server.
+1. Install <b>ipm</b> from https://github.com/TCGAExpedition/ipm
+2. Put war/ipm-ws.war on your Tomcat web server.
 3. Set <b><i>'useVitOrPostgre'</i></b> parameter in resources/jQueryPostgres.conf.
 4. Set connction parameters in <i>jQueryPostgres.conf</i> or in <i>jQueryVrt.conf</i> based on your 
 <b>tcga-expedition</b> data store selection. 

@@ -14,6 +14,6 @@ Tomcat 7.x running on Java 7 or greater.
 4. Set connction parameters in <i>jQueryPostgres.conf</i> or in <i>jQueryVrt.conf</i> based on your 
 <b>tcga-expedition</b> data store selection. 
 5. Copy <i>jQueryPostgres.conf</i> to $CATALINA_HOME/conf directory.
-6. If you use Virtuoso, copy <i>jQueryVrt.conf</i> file MUST be in $CATALINA_HOME/conf directory as well.
+6. If you use Virtuoso, copy <i>jQueryVrt.conf</i> file must be in $CATALINA_HOME/conf directory as well.
 7. Start the server
 

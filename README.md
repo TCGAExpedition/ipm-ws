@@ -17,3 +17,8 @@ Tomcat 7.x running on Java 7 or greater.
 6. If you use Virtuoso, copy <i>jQueryVrt.conf</i> file must be in $CATALINA_HOME/conf directory as well.
 7. Start the server
 
+
+#Project Dependencies
+ - [ipm](https://github.com/TCGAExpedition/ipm)
+ - [tcga-expedition](https://github.com/TCGAExpedition/tcga-expedition)
+
